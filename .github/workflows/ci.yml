@@ -1,0 +1,40 @@
+name: CI Pipeline
+
+# Określenie, kiedy workflow ma być uruchamiane
+on:
+  push:
+    branches:
+      - main   # Workflow uruchamia się po każdym pushu do gałęzi main
+  pull_request:
+    branches:
+      - main   # Workflow uruchamia się przy otwieraniu pull requesta do gałęzi main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Workflow będzie uruchamiany na najnowszej wersji Ubuntu
+
+    steps:
+      # Krok 1: Pobierz kod
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Krok 2: Ustawienie JDK (przykład dla aplikacji Java)
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+
+      # Krok 3: Zbudowanie aplikacji (np. Maven)
+      - name: Build with Maven
+        run: mvn clean install -DskipTests
+
+      # Krok 4: Uruchomienie testów
+      - name: Run tests
+        run: mvn test
+
+      # Krok 5: (opcjonalnie) Publikacja wyników testów
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: target/test-classes
