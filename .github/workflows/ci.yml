@@ -19,11 +19,11 @@ jobs:
         uses: actions/checkout@v2
 
       # Krok 2: Ustawienie JDK (przykład dla aplikacji Java)
-      - name: Set up Amazon Corretto 17
+      - name: Set Java 17
         uses: actions/setup-java@v2
         with:
           java-version: '17'  # Określamy wersję JDK
-          distribution: 'corretto'  # Używamy Amazon Corretto
+          distribution: 'temurin'  # Używamy Amazon Corretto
 
       # Krok 3: Zbudowanie aplikacji (np. Maven)
       - name: Build with Maven
