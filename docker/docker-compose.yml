@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydb
+    networks:
+      - pg-network
+    ports:
+      - "5432:5432"  # Mapowanie portu 5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data  # Przechowywanie danych bazy na dysku lokalnym
+    restart: always
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    networks:
+      - pg-network
+    ports:
+      - "9090:80"  # Mapowanie portu 9090 do portu 80 w kontenerze
+    restart: always
+
+networks:
+  pg-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+    driver: local
+
+# open  http://localhost:9090,
+  # login using admin@admin.com/admin
+  # add connection
+    # Hostname/Address: postgres-db
+    # Port: 5432
+    # Username: myuser
+    # Password: mypassword
